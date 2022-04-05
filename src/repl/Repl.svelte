@@ -1,5 +1,10 @@
 <script>
-  import { setContext, getContext, createEventDispatcher, onDestroy } from 'svelte';
+  import {
+    setContext,
+    getContext,
+    createEventDispatcher,
+    onDestroy,
+  } from 'svelte';
   import { writable } from 'svelte/store';
   import SplitPane from './SplitPane.svelte';
   import ComponentSelector from './Input/ComponentSelector.svelte';
@@ -10,13 +15,14 @@
   import PaneWithPanel from './Output/PaneWithPanel.svelte';
   import CodeMirror from './CodeMirror.svelte';
   import { spring } from 'svelte/motion';
+  import { exportBundle } from '../stores';
 
   import {
     components,
     debug,
     selectedComponent as selected,
     autoRun,
-    prevPilingState
+    prevPilingState,
   } from '../stores.js';
 
   import {
@@ -124,24 +130,29 @@
     const result = await bundler.bundle([
       ...$components,
       {
-      type: 'js',
-      name: 'piling-state',
-      source: `const prevPilingState = ${$debug ? null : $prevPilingState};export default prevPilingState;`
-      }
+        type: 'js',
+        name: 'piling-state',
+        source: `const prevPilingState = ${
+          $debug ? null : $prevPilingState
+        };export default prevPilingState;`,
+      },
     ]);
-    if (result && token === current_token) bundle.set(result);
-    // update selected component    
+    if (result && token === current_token) {
+      bundle.set(result);
+      exportBundle.set(result);
+    }
+    // update selected component
     if (!$selected) {
       // select first component and reset editor
       handle_select($components[0]);
     } else {
       // keep the same component if still there, otherwise select first component and reset editor
-      const newComponent = $components.find(el => {
-        return el.name === $selected.name && el.type === $selected.type
+      const newComponent = $components.find((el) => {
+        return el.name === $selected.name && el.type === $selected.type;
       });
       if ($selected !== newComponent) {
         handle_select(newComponent || $components[0]);
-      };
+      }
     }
   }
 

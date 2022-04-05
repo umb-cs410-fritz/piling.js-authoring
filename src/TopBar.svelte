@@ -2,13 +2,14 @@
   import { getContext, createEventDispatcher } from 'svelte';
   import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
   import Fab, { Label, Icon } from '@smui/fab';
-  import List, {Item, Text} from '@smui/list';
+  import List, { Item, Text } from '@smui/list';
   import Examples from './Examples.svelte';
   import Import from './Import.svelte';
 
   import { autoRun, alwaysPreservePiles } from './stores';
 
   import { NAV_HEIGHT } from './constants.js';
+  import Export from './Export.svelte';
   import Settings from './Settings.svelte';
 
   const { open: openModal } = getContext('simple-modal');
@@ -21,6 +22,11 @@
   // Settings Modal
   function openSettingsHandler() {
     openModal(Settings, { runHandler });
+  }
+
+  // Export Modal
+  function openExportHandler() {
+    openModal(Export, {});
   }
 
   let dense = true;
@@ -99,7 +105,7 @@
         <Title>{title}</Title>
       </Section>
       <Section align="end" toolbar>
-        <Fab aria-label="Settings" on:click={openSettingsHandler}>
+        <Fab aria-label="Export" on:click={openExportHandler}>
           <Icon class="material-icons">file_download</Icon>
           <Label>Export</Label>
         </Fab>
