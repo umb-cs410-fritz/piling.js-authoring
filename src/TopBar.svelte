@@ -1,10 +1,17 @@
 <script>
-  import { getContext, createEventDispatcher } from 'svelte';
+  import {
+    onMount,
+    onDestroy,
+    getContext,
+    createEventDispatcher,
+  } from 'svelte';
   import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
   import Fab, { Label, Icon } from '@smui/fab';
   import List, { Item, Text } from '@smui/list';
   import Examples from './Examples.svelte';
   import Import from './Import.svelte';
+
+  import { tabId } from './stores';
 
   import { autoRun, alwaysPreservePiles } from './stores';
 
@@ -13,11 +20,30 @@
   import Settings from './Settings.svelte';
 
   const { open: openModal } = getContext('simple-modal');
+  let exportData;
+  let bc;
 
   const dispatch = createEventDispatcher();
 
   const runHandler = () => dispatch('rebundle');
   const refreshHandler = () => dispatch('refresh');
+
+  onMount(async () => {
+    // Data for Export
+    bc = new BroadcastChannel($tabId);
+    bc.onmessage = function (m) {
+      exportData = URL.createObjectURL(
+        new Blob([...m.data.payload], {
+          type: 'application/json',
+        })
+      );
+    };
+  });
+
+  onDestroy(() => {
+    if (bc) bc.close();
+    if (exportData) URL.revokeObjectURL(exportData);
+  });
 
   // Settings Modal
   function openSettingsHandler() {
@@ -26,7 +52,7 @@
 
   // Export Modal
   function openExportHandler() {
-    openModal(Export, {});
+    openModal(Export, { data: exportData });
   }
 
   let dense = true;
@@ -105,7 +131,10 @@
         <Title>{title}</Title>
       </Section>
       <Section align="end" toolbar>
-        <Fab aria-label="Export" on:click={openExportHandler}>
+        <Fab
+          aria-label="Export"
+          id="export-button"
+          on:click={openExportHandler}>
           <Icon class="material-icons">file_download</Icon>
           <Label>Export</Label>
         </Fab>

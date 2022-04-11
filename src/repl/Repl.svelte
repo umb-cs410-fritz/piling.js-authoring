@@ -15,7 +15,6 @@
   import PaneWithPanel from './Output/PaneWithPanel.svelte';
   import CodeMirror from './CodeMirror.svelte';
   import { spring } from 'svelte/motion';
-  import { exportBundle } from '../stores';
 
   import {
     components,
@@ -139,7 +138,6 @@
     ]);
     if (result && token === current_token) {
       bundle.set(result);
-      exportBundle.set(result);
     }
     // update selected component
     if (!$selected) {

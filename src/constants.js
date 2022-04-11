@@ -33,7 +33,8 @@ export const DEFAULT_COMPONENT_APP = {
   let domElement;
   let piling;
   let hasInitialized = false;
-  
+  let bcExport;
+
   onMount(async () => {
     let items;
     try {
@@ -53,7 +54,7 @@ export const DEFAULT_COMPONENT_APP = {
       : importedAggregators;
     const coverAggregator = aggregators.coverAggregator || null;
     const previewAggregator = aggregators.previewAggregator || null;
-    
+
     const renderers = importedRenderers.default && isFunction(importedRenderers.default)
       ? importedRenderers.default({ domElement })
       : importedRenderers;
@@ -106,7 +107,11 @@ export const DEFAULT_COMPONENT_APP = {
       let bc = new BroadcastChannel(settings.tabId);
       bc.postMessage({ type: 'update', payload: JSON.stringify(piling.exportState()) })
     };
-    
+
+    // add a bc for the Export module
+    bcExport = new BroadcastChannel(settings.tabId);
+    bcExport.postMessage({ type: 'update', payload: JSON.stringify(piling.exportState()) });
+
     const updateHandlerIdled = (...args) => {
       requestIdleCallback(() => {
         updateHandler(...args)
@@ -123,6 +128,7 @@ export const DEFAULT_COMPONENT_APP = {
 
   onDestroy(() => {
     if (piling) piling.destroy();
+    if (bcExport) bcExport.close()
   });
 </script>
 

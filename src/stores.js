@@ -56,6 +56,3 @@ export const prevPilingState = makeSerializable(writable(_prevPilingState));
 export const alwaysPreservePiles = makeSerializable(
   writable(_alwaysPreservePiles)
 );
-
-// allow the REPL bundle to be accessed for Export
-export const exportBundle = makeSerializable(writable(null));
