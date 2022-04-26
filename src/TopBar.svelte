@@ -16,7 +16,6 @@
   import { autoRun, alwaysPreservePiles } from './stores';
 
   import { NAV_HEIGHT } from './constants.js';
-  import Export from './Export.svelte';
   import Settings from './Settings.svelte';
 
   const { open: openModal } = getContext('simple-modal');
@@ -51,11 +50,6 @@
   // Settings Modal
   function openSettingsHandler() {
     openModal(Settings, { runHandler });
-  }
-
-  // Export Modal
-  function openExportHandler() {
-    openModal(Export, { data: exportData });
   }
 
   let dense = true;
@@ -134,13 +128,16 @@
         <Title>{title}</Title>
       </Section>
       <Section align="end" toolbar>
-        <Fab
+        <a
           aria-label="Export"
           id="export-button"
-          on:click={openExportHandler}>
+          class="mdc-fab mdc-ripple-upgraded"
+          style="text-decoration: none; font-size: 10pt; --mdc-ripple-fg-size: 52px; --mdc-ripple-fg-scale: 2.097523981797536; --mdc-ripple-fg-translate-start: -3.9666748046875px, -2px; --mdc-ripple-fg-translate-end: 17.333335876464844px, -2px;"
+          href={exportData}
+          download="piling-settings.json">
           <Icon class="material-icons">file_download</Icon>
           <Label>Export</Label>
-        </Fab>
+        </a>
         <Fab aria-label="Settings" on:click={openSettingsHandler}>
           <Icon class="material-icons">settings</Icon>
           <Label>Settings</Label>
