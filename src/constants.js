@@ -110,7 +110,7 @@ export const DEFAULT_COMPONENT_APP = {
 
     // add a bc for the Export module
     bcExport = new BroadcastChannel(settings.tabId);
-    bcExport.postMessage({ type: 'update', payload: piling.exportState() });
+    bcExport.postMessage({ type: 'update', payload: JSON.stringify(piling.exportState()) });
 
     const updateHandlerIdled = (...args) => {
       requestIdleCallback(() => {
