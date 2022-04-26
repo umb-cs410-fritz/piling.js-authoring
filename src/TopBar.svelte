@@ -32,8 +32,11 @@
     // Data for Export
     bc = new BroadcastChannel($tabId);
     bc.onmessage = function (m) {
+      const json = JSON.parse(m.data.payload);
+      json.items = null;
+      json.piles = null;
       exportData = URL.createObjectURL(
-        new Blob([...m.data.payload], {
+        new Blob([...JSON.stringify(json)], {
           type: 'application/json',
         })
       );
