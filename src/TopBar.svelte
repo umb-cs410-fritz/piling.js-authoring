@@ -32,8 +32,12 @@
     bc = new BroadcastChannel($tabId);
     bc.onmessage = function (m) {
       const json = JSON.parse(m.data.payload);
-      json.items = null;
-      json.piles = null;
+      delete json.items;
+      delete json.piles;
+      delete json.temporaryDepiledPiles;
+      delete json.magnifiedPiles;
+      delete json.focusedPiles;
+      delete json.depiledPile;
       exportData = URL.createObjectURL(
         new Blob([...JSON.stringify(json)], {
           type: 'application/json',
