@@ -7,16 +7,11 @@ export const NAV_HEIGHT = '48px';
 
 export const STORAGE_KEY = 'authoring-pilingjs';
 
-export const DEFAULT_DATA = [
-  { src: "https://i.imgur.com/E9k1J4R.jpg" },
-  { src: "https://i.imgur.com/gVOmaqq.jpg" },
-  { src: "https://i.imgur.com/d9T1VxW.jpg" },
-  { src: "https://i.imgur.com/V0Fdx5q.jpg" },
-  { src: "https://i.imgur.com/owkAtsu.jpg" },
-  { src: "https://i.imgur.com/CUyGN8e.jpg" },
-  { src: "https://i.imgur.com/1XPf7X2.jpg" },
-  { src: "https://i.imgur.com/FCa7eWr.jpg" },
-];
+export const DEFAULT_DATA = Array(9)
+  .fill()
+  .map(() => ({
+    src: 'https://storage.googleapis.com/pilingjs/coco-cars/000000253413.jpg',
+  }));
 
 export const DEFAULT_COMPONENT_APP = {
   type: 'svelte',

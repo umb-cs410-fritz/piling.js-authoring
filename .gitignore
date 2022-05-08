@@ -1,5 +1,5 @@
 /node_modules/
-#/public/build/
-#/public/workers/
+/public/build/
+/public/workers/
 
 .DS_Store
