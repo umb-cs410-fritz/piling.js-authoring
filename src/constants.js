@@ -7,11 +7,23 @@ export const NAV_HEIGHT = '48px';
 
 export const STORAGE_KEY = 'authoring-pilingjs';
 
+/* Original Default Image Data
 export const DEFAULT_DATA = Array(9)
   .fill()
   .map(() => ({
     src: 'https://storage.googleapis.com/pilingjs/coco-cars/000000253413.jpg',
   }));
+*/
+
+// Dog images: used for GitHub Pages as a workaround for CORS
+export const DEFAULT_DATA = [
+  { src: 'https://i.imgur.com/ACzONUZ.jpg' },
+  { src: 'https://i.imgur.com/gXuxeHK.jpg' },
+  { src: 'https://i.imgur.com/h1eQQlx.jpg' },
+  { src: 'https://i.imgur.com/92RDn8F.jpg' },
+  { src: 'https://i.imgur.com/eV1xLfD.jpg' },
+  { src: 'https://i.imgur.com/je7Y4tr.jpg' },
+];
 
 export const DEFAULT_COMPONENT_APP = {
   type: 'svelte',
