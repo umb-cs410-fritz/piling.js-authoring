@@ -44,7 +44,9 @@
     "start": "sirv public",
     "start:dev": "sirv public --dev",
     "precommit": "NODE_ENV=production lint-staged",
-    "lint": "eslint src/**/*.js src/**/*.svelte rollup.config.js"
+    "lint": "eslint src/**/*.js src/**/*.svelte rollup.config.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d public -t --git git"
   },
   "dependencies": {
     "@smui/form-field": "^1.0.0",
@@ -79,6 +81,7 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-svelte3": "^2.7.3",
+    "gh-pages": "^4.0.0",
     "husky": "^4.2.5",
     "just-clone": "^3.1.0",
     "lint-staged": "^10.2.11",
