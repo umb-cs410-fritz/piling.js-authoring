@@ -11,6 +11,24 @@
       "url": "https://lekschas.de"
     }
   ],
+  "contributors": [
+    {
+      "name": "Emily Gagne",
+      "email": "Emily.Gagne001@umb.edu"
+    },
+    {
+      "name": "Tung Duong",
+      "email": "Tung.Duong002@umb.edu"
+    },
+    {
+      "name": "Kanthraj Shantharam",
+      "email": "K.Shantharam001@umb.edu"
+    },
+    {
+      "name": "Josh Schultz",
+      "email": "Josh.Schultz001@umb.edu"
+    }
+  ],
   "homepage": "https://github.com/eyw410/authoring-piling.js",
   "license": "Apache-2.0",
   "keywords": [
