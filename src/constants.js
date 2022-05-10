@@ -23,6 +23,7 @@ export const DEFAULT_DATA = [
   { src: 'https://i.imgur.com/92RDn8F.jpg' },
   { src: 'https://i.imgur.com/eV1xLfD.jpg' },
   { src: 'https://i.imgur.com/je7Y4tr.jpg' },
+  { src: 'https://i.imgur.com/kEJ3IFA.jpg' }
 ];
 
 export const DEFAULT_COMPONENT_APP = {
