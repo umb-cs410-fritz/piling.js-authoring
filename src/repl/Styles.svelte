@@ -10,27 +10,33 @@
 
 <style>
   .heading {
-    padding: 1em;
+    margin: 2em;
+  }
+  .inputs{
+      margin-top: 1em;
   }
 </style>
 
 
 <div class="heading">
-
-  <label>isChanged:</label>
-  <input
+    <h1>Styles Editor</h1>
+  <label>Columns: <span> {slider_value}</span></label>
+  <div class="inputs">
+      <input
     type="range"
     bind:value={slider_value}
     on:change={handle_styles_change}
     min="0"
     max="10" />
-  <span>{slider_value}</span>
-  <div style="margin-top:3rem;">
+  </div>
+  
+  <!-- working on other input options -->
+  <!-- <div style="margin-top:3rem;">
     <label>isTrue:</label>
     <input
       type="checkbox"
       bind:checked={yes}
       on:change={handle_styles_change} />
     <span>{yes ? 'Checked' : 'NotChecked'}</span>
-  </div>
+  </div> -->
 </div>
