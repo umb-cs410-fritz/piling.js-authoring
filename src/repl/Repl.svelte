@@ -15,6 +15,7 @@
   import PaneWithPanel from './Output/PaneWithPanel.svelte';
   import CodeMirror from './CodeMirror.svelte';
   import { spring } from 'svelte/motion';
+  import Sidebar from '../Sidebar.svelte';
 
   import {
     components,
@@ -424,6 +425,8 @@
                 on:change={handle_data_change}
                 on:editorReady={fulfillDataEditorReady} />
             </div>
+          {:else if $selected.name == 'sidebar'}
+            <Sidebar/>  
           {:else}buttons here{/if}
         </div>
 
