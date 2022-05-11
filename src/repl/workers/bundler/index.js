@@ -10,6 +10,10 @@ let packagesUrl;
 let svelteUrl;
 let current_id;
 
+// this should be empty for standalone URLs
+// if there is a subpath to the Authoring Tool, it should be listed here
+const proxyLocation = './piling.js-authoring/';
+
 self.addEventListener('message', (event) => {
   switch (event.data.type) {
     case 'init':
@@ -153,15 +157,24 @@ async function get_bundle(uid, mode, cache, lookup) {
         }
 
         if (importee === 'piling.js') {
-          return new URL('piling-proxy.js', window.location.origin).href;
+          return new URL(
+            `${proxyLocation}piling-proxy.js`,
+            window.location.origin
+          ).href;
         }
 
         if (importee === 'pixi.js') {
-          return new URL('pixi-proxy.js', window.location.origin).href;
+          return new URL(
+            `${proxyLocation}pixi-proxy.js`,
+            window.location.origin
+          ).href;
         }
 
         if (importee === 'umap-js') {
-          return new URL('umap-proxy.js', window.location.origin).href;
+          return new URL(
+            `${proxyLocation}umap-proxy.js`,
+            window.location.origin
+          ).href;
         }
 
         try {
@@ -212,19 +225,19 @@ async function get_bundle(uid, mode, cache, lookup) {
         cache[id] && cache[id].code === code
           ? cache[id].result
           : self.svelte.compile(
-            code,
-            Object.assign(
-              {
-                generate: mode,
-                format: 'esm',
-                dev: true,
-                filename: name + '.svelte',
-              },
-              has_loopGuardTimeout_feature() && {
-                loopGuardTimeout: 100,
-              }
-            )
-          );
+              code,
+              Object.assign(
+                {
+                  generate: mode,
+                  format: 'esm',
+                  dev: true,
+                  filename: name + '.svelte',
+                },
+                has_loopGuardTimeout_feature() && {
+                  loopGuardTimeout: 100,
+                }
+              )
+            );
 
       new_cache[id] = { code, result };
 

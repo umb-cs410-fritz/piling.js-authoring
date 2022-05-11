@@ -16,6 +16,7 @@
   import CodeMirror from './CodeMirror.svelte';
   import { spring } from 'svelte/motion';
   import Styles from './Styles.svelte';
+  import Sidebar from '../Sidebar.svelte';
 
   import {
     components,
@@ -462,7 +463,9 @@
           {:else if $selected.name === DEFAULT_STYLES_NAME}
             <Styles on:change={handle_styles_change} />
           {/if}
-
+          {:else if $selected.name == 'sidebar'}
+            <Sidebar/>  
+          {/if}
         </div>
 
         <div slot="panel-body" style="display: flex; height: 100%;">

@@ -11,7 +11,25 @@
       "url": "https://lekschas.de"
     }
   ],
-  "homepage": "https://github.com/eyw410/authoring-piling.js",
+  "contributors": [
+    {
+      "name": "Emily Gagne",
+      "email": "Emily.Gagne001@umb.edu"
+    },
+    {
+      "name": "Tung Duong",
+      "email": "Tung.Duong002@umb.edu"
+    },
+    {
+      "name": "Kanthraj Shantharam",
+      "email": "K.Shantharam001@umb.edu"
+    },
+    {
+      "name": "Josh Schultz",
+      "email": "Josh.Schultz001@umb.edu"
+    }
+  ],
+  "homepage": "https://umb-cs410-fritz.github.io/piling.js-authoring/",
   "license": "Apache-2.0",
   "keywords": [
     "authoring",
@@ -26,7 +44,9 @@
     "start": "sirv public",
     "start:dev": "sirv public --dev",
     "precommit": "NODE_ENV=production lint-staged",
-    "lint": "eslint src/**/*.js src/**/*.svelte rollup.config.js"
+    "lint": "eslint src/**/*.js src/**/*.svelte rollup.config.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d public -t --git git"
   },
   "dependencies": {
     "@smui/form-field": "^1.0.0",
@@ -36,13 +56,13 @@
     "estree-walker": "^0.9.0",
     "marked": "^0.8.2",
     "papaparse": "^5.2.0",
-    "piling.js": "^0.7.13",
-    "pixi.js": "^5.1.6",
+    "piling.js": "~0.10.0",
+    "pixi.js": "~5.1.6",
     "sourcemap-codec": "^1.4.6",
     "svelte": "^3.23.2",
     "svelte-json-tree": "0.0.5",
     "svelte-simple-modal": "0.6.0",
-    "umap-js": "^1.3.2",
+    "umap-js": "~1.3.2",
     "yootils": "0.0.16"
   },
   "devDependencies": {
@@ -61,6 +81,7 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-svelte3": "^2.7.3",
+    "gh-pages": "^4.0.0",
     "husky": "^4.2.5",
     "just-clone": "^3.1.0",
     "lint-staged": "^10.2.11",
@@ -69,17 +90,17 @@
     "prettier": "^2.0.5",
     "prettier-plugin-svelte": "^1.1.0",
     "pretty-quick": "^2.0.1",
-    "rollup": "^2.18.1",
+    "rollup": "^2.18.2",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-css-only": "^2.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-livereload": "^1.3.0",
     "rollup-plugin-postcss": "^3.1.2",
     "rollup-plugin-string": "^3.0.0",
-    "rollup-plugin-svelte": "^5.0.3",
-    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-svelte": "~6.1.1",
+    "rollup-plugin-terser": "^6.1.0",
     "serve": "^11.3.2",
-    "sirv-cli": "^0.4.4"
+    "sirv-cli": "^1.0.3"
   },
   "repository": {
     "type": "git",

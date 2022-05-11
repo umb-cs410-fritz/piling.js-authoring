@@ -1,10 +1,17 @@
 <script>
-  import { getContext, createEventDispatcher } from 'svelte';
+  import {
+    onMount,
+    onDestroy,
+    getContext,
+    createEventDispatcher,
+  } from 'svelte';
   import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
   import Fab, { Label, Icon } from '@smui/fab';
-  import List, {Item, Text} from '@smui/list';
+  import List, { Item, Text } from '@smui/list';
   import Examples from './Examples.svelte';
   import Import from './Import.svelte';
+
+  import { tabId } from './stores';
 
   import { autoRun, alwaysPreservePiles } from './stores';
 
@@ -12,11 +19,37 @@
   import Settings from './Settings.svelte';
 
   const { open: openModal } = getContext('simple-modal');
+  let exportData;
+  let bc;
 
   const dispatch = createEventDispatcher();
 
   const runHandler = () => dispatch('rebundle');
   const refreshHandler = () => dispatch('refresh');
+
+  onMount(async () => {
+    // Data for Export
+    bc = new BroadcastChannel($tabId);
+    bc.onmessage = function (m) {
+      const json = JSON.parse(m.data.payload);
+      delete json.items;
+      delete json.piles;
+      delete json.temporaryDepiledPiles;
+      delete json.magnifiedPiles;
+      delete json.focusedPiles;
+      delete json.depiledPile;
+      exportData = URL.createObjectURL(
+        new Blob([...JSON.stringify(json)], {
+          type: 'application/json',
+        })
+      );
+    };
+  });
+
+  onDestroy(() => {
+    if (bc) bc.close();
+    if (exportData) URL.revokeObjectURL(exportData);
+  });
 
   // Settings Modal
   function openSettingsHandler() {
@@ -99,10 +132,16 @@
         <Title>{title}</Title>
       </Section>
       <Section align="end" toolbar>
-        <Fab aria-label="Settings" on:click={openSettingsHandler}>
+        <a
+          aria-label="Export"
+          id="export-button"
+          class="mdc-fab mdc-ripple-upgraded"
+          style="text-decoration: none; font-size: 10pt; --mdc-ripple-fg-size: 52px; --mdc-ripple-fg-scale: 2.097523981797536; --mdc-ripple-fg-translate-start: -3.9666748046875px, -2px; --mdc-ripple-fg-translate-end: 17.333335876464844px, -2px;"
+          href={exportData}
+          download="piling-settings.json">
           <Icon class="material-icons">file_download</Icon>
           <Label>Export</Label>
-        </Fab>
+        </a>
         <Fab aria-label="Settings" on:click={openSettingsHandler}>
           <Icon class="material-icons">settings</Icon>
           <Label>Settings</Label>

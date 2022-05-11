@@ -7,11 +7,24 @@ export const NAV_HEIGHT = '48px';
 
 export const STORAGE_KEY = 'authoring-pilingjs';
 
+/* Original Default Image Data
 export const DEFAULT_DATA = Array(9)
   .fill()
   .map(() => ({
     src: 'https://storage.googleapis.com/pilingjs/coco-cars/000000253413.jpg',
   }));
+*/
+
+// Dog images: used for GitHub Pages as a workaround for CORS
+export const DEFAULT_DATA = [
+  { src: 'https://i.imgur.com/ACzONUZ.jpg' },
+  { src: 'https://i.imgur.com/gXuxeHK.jpg' },
+  { src: 'https://i.imgur.com/h1eQQlx.jpg' },
+  { src: 'https://i.imgur.com/92RDn8F.jpg' },
+  { src: 'https://i.imgur.com/eV1xLfD.jpg' },
+  { src: 'https://i.imgur.com/je7Y4tr.jpg' },
+  { src: 'https://i.imgur.com/kEJ3IFA.jpg' }
+];
 
 export const DEFAULT_COMPONENT_APP = {
   type: 'svelte',
@@ -33,7 +46,8 @@ export const DEFAULT_COMPONENT_APP = {
   let domElement;
   let piling;
   let hasInitialized = false;
-  
+  let bcExport;
+
   onMount(async () => {
     let items;
     try {
@@ -53,7 +67,7 @@ export const DEFAULT_COMPONENT_APP = {
       : importedAggregators;
     const coverAggregator = aggregators.coverAggregator || null;
     const previewAggregator = aggregators.previewAggregator || null;
-    
+
     const renderers = importedRenderers.default && isFunction(importedRenderers.default)
       ? importedRenderers.default({ domElement })
       : importedRenderers;
@@ -106,7 +120,11 @@ export const DEFAULT_COMPONENT_APP = {
       let bc = new BroadcastChannel(settings.tabId);
       bc.postMessage({ type: 'update', payload: JSON.stringify(piling.exportState()) })
     };
-    
+
+    // add a bc for the Export module
+    bcExport = new BroadcastChannel(settings.tabId);
+    bcExport.postMessage({ type: 'update', payload: JSON.stringify(piling.exportState()) });
+
     const updateHandlerIdled = (...args) => {
       requestIdleCallback(() => {
         updateHandler(...args)
@@ -123,6 +141,7 @@ export const DEFAULT_COMPONENT_APP = {
 
   onDestroy(() => {
     if (piling) piling.destroy();
+    if (bcExport) bcExport.close()
   });
 </script>
 
@@ -193,6 +212,12 @@ export const DEFAULT_COMPONENT_GROUP_ARRANGE = {
 }`,
 };
 
+export const DEFAULT_COMPONENT_SIDEBAR = {
+  type: 'svelte',
+  name: 'sidebar',
+  source: ` `,
+};
+
 export const DEFAULT_COMPONENTS = [
   DEFAULT_COMPONENT_APP,
   DEFAULT_COMPONENT_DATA_JSON,
@@ -201,6 +226,7 @@ export const DEFAULT_COMPONENTS = [
   DEFAULT_COMPONENT_AGGREGATORS,
   DEFAULT_COMPONENT_STYLES,
   DEFAULT_COMPONENT_GROUP_ARRANGE,
+  DEFAULT_COMPONENT_SIDEBAR,
 ];
 
 export const DEFAULT_DATA_NAME = 'data';
@@ -218,6 +244,7 @@ export const DEFAULT_COMPONENTS_NAMED = {
   'aggregators.js': DEFAULT_COMPONENT_AGGREGATORS,
   'styles.js': DEFAULT_COMPONENT_STYLES,
   'group-arrange.js': DEFAULT_COMPONENT_GROUP_ARRANGE,
+  'Sidebar.svelte': DEFAULT_COMPONENT_SIDEBAR,
 };
 
 export const DATA_JSON_INDEX = Object.keys(DEFAULT_COMPONENTS_NAMED).indexOf(
