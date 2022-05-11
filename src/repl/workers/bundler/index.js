@@ -12,7 +12,8 @@ let current_id;
 
 // this should be empty for standalone URLs
 // if there is a subpath to the Authoring Tool, it should be listed here
-const proxyLocation = './piling.js-authoring/';
+const ghPagesLocation = './piling.js-authoring/';
+const proxyLocation = ghPagesLocation;
 
 self.addEventListener('message', (event) => {
   switch (event.data.type) {
