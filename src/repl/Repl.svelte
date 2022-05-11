@@ -442,7 +442,7 @@
       <ComponentSelector {handle_select} handle_data_select={initTop} />
       <PaneWithPanel
         bind:pos
-        panel={$selected.name === DEFAULT_DATA_NAME ? 'Data Transformer' : 'Custom Codes'}>
+        panel={$selected.name === DEFAULT_DATA_NAME ? 'Data Transformer' : 'Custom Code'}>
         <div slot="main">
           <div class="panel-header" on:click={toggleTop}>
             <h3>
