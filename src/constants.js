@@ -212,6 +212,12 @@ export const DEFAULT_COMPONENT_GROUP_ARRANGE = {
 }`,
 };
 
+export const DEFAULT_COMPONENT_SIDEBAR = {
+  type: 'svelte',
+  name: 'sidebar',
+  source: ` `,
+};
+
 export const DEFAULT_COMPONENTS = [
   DEFAULT_COMPONENT_APP,
   DEFAULT_COMPONENT_DATA_JSON,
@@ -220,6 +226,7 @@ export const DEFAULT_COMPONENTS = [
   DEFAULT_COMPONENT_AGGREGATORS,
   DEFAULT_COMPONENT_STYLES,
   DEFAULT_COMPONENT_GROUP_ARRANGE,
+  DEFAULT_COMPONENT_SIDEBAR,
 ];
 
 export const DEFAULT_DATA_NAME = 'data';
@@ -233,6 +240,7 @@ export const DEFAULT_COMPONENTS_NAMED = {
   'aggregators.js': DEFAULT_COMPONENT_AGGREGATORS,
   'styles.js': DEFAULT_COMPONENT_STYLES,
   'group-arrange.js': DEFAULT_COMPONENT_GROUP_ARRANGE,
+  'Sidebar.svelte': DEFAULT_COMPONENT_SIDEBAR,
 };
 
 export const DATA_JSON_INDEX = Object.keys(DEFAULT_COMPONENTS_NAMED).indexOf(
