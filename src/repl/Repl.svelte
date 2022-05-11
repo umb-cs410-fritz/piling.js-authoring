@@ -15,6 +15,7 @@
   import PaneWithPanel from './Output/PaneWithPanel.svelte';
   import CodeMirror from './CodeMirror.svelte';
   import { spring } from 'svelte/motion';
+  import Styles from './Styles.svelte';
   import Sidebar from '../Sidebar.svelte';
 
   import {
@@ -27,7 +28,9 @@
 
   import {
     DEFAULT_DATA_NAME,
+    DEFAULT_STYLES_NAME,
     DATA_JSON_INDEX,
+    STYLES_JS_INDEX,
     INTERMEDIATE_APP_MAP,
   } from '../constants.js';
 
@@ -42,6 +45,8 @@
   export let injectedJS = '';
   export let injectedCSS = '';
   export let openLoadDataModal;
+
+  let styles_var;
 
   const topEditorHistoryMap = new Map();
   const historyMap = new Map();
@@ -137,9 +142,7 @@
         };export default prevPilingState;`,
       },
     ]);
-    if (result && token === current_token) {
-      bundle.set(result);
-    }
+    if (result && token === current_token) bundle.set(result);
     // update selected component
     if (!$selected) {
       // select first component and reset editor
@@ -252,6 +255,37 @@
       });
     },
 
+    // my code starts
+    handle_styles_change: (event) => {
+      console.log('this is event obj' + event);
+      console.log(event);
+      var styles_var = `const styles = {
+            columns: ${event.target.value},
+            };
+          export default styles;`;
+      components.update((components) => {
+        // TODO this is a bit hacky — we're relying on mutability
+        // so that updating components works... might be better
+        // if a) components had unique IDs, b) we tracked selected
+        // *index* rather than component, and c) `selected` was
+        // derived from `components` and `index`
+        components[STYLES_JS_INDEX].source = styles_var;
+        return components;
+      });
+
+      components.update((c) => c);
+
+      // recompile selected component
+      output.update($components[STYLES_JS_INDEX], $compile_options);
+
+      $autoRun && rebundle();
+
+      dispatch('change', {
+        components: $components,
+      });
+    },
+    //my code ends
+
     register_module_editor(editor) {
       module_editor = editor;
       fulfil_module_editor_ready();
@@ -268,6 +302,7 @@
   });
 
   const { handle_data_change } = getContext('REPL');
+  const { handle_styles_change } = getContext('REPL');
 
   const handle_select_historyMap = (historyMap, component) => {
     historyMap.set(get_component_name($selected), module_editor.getHistory());
@@ -407,7 +442,7 @@
       <ComponentSelector {handle_select} handle_data_select={initTop} />
       <PaneWithPanel
         bind:pos
-        panel={$selected.name === DEFAULT_DATA_NAME ? 'Data Transformer' : 'Custom Code'}>
+        panel={$selected.name === DEFAULT_DATA_NAME ? 'Data Transformer' : 'Custom Codes'}>
         <div slot="main">
           <div class="panel-header" on:click={toggleTop}>
             <h3>
@@ -425,9 +460,12 @@
                 on:change={handle_data_change}
                 on:editorReady={fulfillDataEditorReady} />
             </div>
+          {:else if $selected.name === DEFAULT_STYLES_NAME}
+            <Styles on:change={handle_styles_change} />
+          {/if}
           {:else if $selected.name == 'sidebar'}
             <Sidebar/>  
-          {:else}buttons here{/if}
+          {/if}
         </div>
 
         <div slot="panel-body" style="display: flex; height: 100%;">
