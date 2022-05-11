@@ -2,7 +2,7 @@
   import { getContext, onMount } from 'svelte';
 
   console.log('new styles page');
-  export var slider_value = 5;
+  export var slider_value = 3;
   export var yes;
 
   const { handle_styles_change } = getContext('REPL');
@@ -29,7 +29,7 @@
     min="0"
     max="10" />
   </div>
-  
+
   <!-- working on other input options -->
   <!-- <div style="margin-top:3rem;">
     <label>isTrue:</label>
