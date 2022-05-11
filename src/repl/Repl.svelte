@@ -462,9 +462,8 @@
             </div>
           {:else if $selected.name === DEFAULT_STYLES_NAME}
             <Styles on:change={handle_styles_change} />
-          {/if}
           {:else if $selected.name == 'sidebar'}
-            <Sidebar/>  
+            <Sidebar/>
           {/if}
         </div>
 
