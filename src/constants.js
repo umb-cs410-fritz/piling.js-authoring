@@ -23,7 +23,7 @@ export const DEFAULT_DATA = [
   { src: 'https://i.imgur.com/92RDn8F.jpg' },
   { src: 'https://i.imgur.com/eV1xLfD.jpg' },
   { src: 'https://i.imgur.com/je7Y4tr.jpg' },
-  { src: 'https://i.imgur.com/kEJ3IFA.jpg' }
+  { src: 'https://i.imgur.com/kEJ3IFA.jpg' },
 ];
 
 export const DEFAULT_COMPONENT_APP = {
@@ -47,6 +47,7 @@ export const DEFAULT_COMPONENT_APP = {
   let piling;
   let hasInitialized = false;
   let bcExport;
+  let bcImport;
 
   onMount(async () => {
     let items;
@@ -125,6 +126,14 @@ export const DEFAULT_COMPONENT_APP = {
     bcExport = new BroadcastChannel(settings.tabId);
     bcExport.postMessage({ type: 'update', payload: JSON.stringify(piling.exportState()) });
 
+    // add a bc for importing settings data
+    bcImport = new BroadcastChannel('import');
+    bcImport.onmessage = function (m) {
+      let newData = JSON.parse(m.data.payload);
+      let original = piling.exportState();
+      piling.importState({...original, ...newData});
+    }
+
     const updateHandlerIdled = (...args) => {
       requestIdleCallback(() => {
         updateHandler(...args)
@@ -141,7 +150,8 @@ export const DEFAULT_COMPONENT_APP = {
 
   onDestroy(() => {
     if (piling) piling.destroy();
-    if (bcExport) bcExport.close()
+    if (bcExport) bcExport.close();
+    if (bcImport) bcImport.close();
   });
 </script>
 

@@ -10,6 +10,7 @@
   export let refreshHandler;
 
   let data = JSON.parse($components[1].source || '[]');
+  let bc;
   let dragOver = false;
   let files;
   let error;
@@ -37,8 +38,18 @@
         case 'application/json':
           readJsonFile(files[0])
             .then((newData) => {
-              data = newData;
-              onSuccess();
+              // check if the file holds setting data
+              if (newData.pileSettings) {
+                bc = new BroadcastChannel('import');
+                bc.postMessage({
+                  type: 'import',
+                  payload: JSON.stringify(newData.pileSettings),
+                });
+                close();
+              } else {
+                data = newData;
+                onSuccess();
+              }
             })
             .catch(() => {
               error = 'Invalid JSON file';
@@ -79,6 +90,7 @@
     refreshHandler();
     close();
   };
+
 </script>
 
 <style>
@@ -138,6 +150,7 @@
   .dragOver .drag-leave-layer {
     display: block;
   }
+
 </style>
 
 <div class="importForm">
