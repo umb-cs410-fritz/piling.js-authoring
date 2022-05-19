@@ -19,8 +19,13 @@
   import Settings from './Settings.svelte';
 
   const { open: openModal } = getContext('simple-modal');
-  let exportData;
-  let bc;
+  let exportData = {
+    pileSettings: null,
+    sidebarSettings: null
+  };
+  let exportURL;
+  let bcPiling;
+  let bcSidebar;
 
   const dispatch = createEventDispatcher();
 
@@ -29,8 +34,8 @@
 
   onMount(async () => {
     // Data for Export
-    bc = new BroadcastChannel($tabId);
-    bc.onmessage = function (m) {
+    bcPiling = new BroadcastChannel($tabId);
+    bcPiling.onmessage = function (m) {
       const json = JSON.parse(m.data.payload);
       delete json.items;
       delete json.piles;
@@ -38,17 +43,31 @@
       delete json.magnifiedPiles;
       delete json.focusedPiles;
       delete json.depiledPile;
-      exportData = URL.createObjectURL(
-        new Blob([...JSON.stringify(json)], {
+      exportData.pileSettings = json;
+      exportURL = URL.createObjectURL(
+        new Blob([...JSON.stringify(exportData)], {
+          type: 'application/json',
+        })
+      );
+    };
+    bcSidebar = new BroadcastChannel('sidebar');
+    bcSidebar.onmessage = function (m) {
+      const json = JSON.parse(m.data.payload);
+      exportData.sidebarSettings = json;
+      exportURL = URL.createObjectURL(
+        new Blob([...JSON.stringify(exportData)], {
           type: 'application/json',
         })
       );
     };
   });
+/**
 
+*/
   onDestroy(() => {
-    if (bc) bc.close();
-    if (exportData) URL.revokeObjectURL(exportData);
+    if (bcPiling) bcPiling.close();
+    if (bcSidebar) bcSidebar.close();
+    if (exportURL) URL.revokeObjectURL(exportURL);
   });
 
   // Settings Modal
@@ -137,7 +156,7 @@
           id="export-button"
           class="mdc-fab mdc-ripple-upgraded"
           style="text-decoration: none; font-size: 10pt; --mdc-ripple-fg-size: 52px; --mdc-ripple-fg-scale: 2.097523981797536; --mdc-ripple-fg-translate-start: -3.9666748046875px, -2px; --mdc-ripple-fg-translate-end: 17.333335876464844px, -2px;"
-          href={exportData}
+          href={exportURL}
           download="piling-settings.json">
           <Icon class="material-icons">file_download</Icon>
           <Label>Export</Label>
