@@ -156,9 +156,9 @@
 <div class="importForm">
   {#if error}
     <div class="error">{error}</div>
-    for="file-input"
   {/if}
   <label
+    for="file-input"
     class="fileLabel import"
     class:dragOver
     on:drop={dropHandler}
