@@ -156,6 +156,7 @@
 <div class="importForm">
   {#if error}
     <div class="error">{error}</div>
+    for="file-input"
   {/if}
   <label
     class="fileLabel import"
@@ -165,7 +166,7 @@
     ondragOver="return false"
     use:Ripple={{ ripple: true, unbounded: false, color: 'primary' }}>
     <div class="content">
-      <input type="file" bind:files />
+      <input type="file" id="file-input" bind:files />
       <div class="iconWrapper">
         <Icon class="material-icons addButton">add_circle_outline</Icon>
       </div>
