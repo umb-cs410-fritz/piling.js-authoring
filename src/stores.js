@@ -67,3 +67,31 @@ export const style_options = makeSerializable(
     previewAlignment: 'center',
   })
 );
+
+// Storage for the sidebar options
+export const options = makeSerializable(writable({
+  // pile/item bools
+  bool_itemsize: false,
+
+  //layout bools
+  bool_cellsize: false,
+  bool_cellpadding: false,
+  bool_numcolumns: false,
+  bool_rowheight: false,
+  bool_cellalignment: false,
+
+  // group bools
+  bool_grouprow: false,
+  bool_groupcolumn: false,
+  bool_groupgrid: false,
+  bool_groupoverlap: false,
+  bool_groupdistance: false,
+
+  // label bools
+  maincat: false,
+  mainsupercat: false,
+  textlabel: false,
+  labelalignment: false,
+  stackdir: false,
+  fontsize: false
+}));
