@@ -8,15 +8,20 @@
   import Compiler from './Compiler.js';
   import CodeMirror from '../CodeMirror.svelte';
   import { is_browser } from '../env.js';
+  import { components } from '../../stores.js';
+  import { DATA_JSON_INDEX } from '../../constants.js';
 
   const { register_output } = getContext('REPL');
 
   export let svelteUrl;
   export let workersUrl;
   export let status;
-  export let sourceErrorLoc = null;
+  // since the js output has commented below,
+  // there are a warning with the sourceErrorLoc and embedded,
+  // then I turn these to be comments to avoid the error.
+  // export let sourceErrorLoc = null;
   export let runtimeError = null;
-  export let embedded = false;
+  // export let embedded = false;
   export let relaxed = false;
   export let injectedJS;
   export let injectedCSS;
@@ -72,6 +77,50 @@
   export let view = 'result';
   let selected_type = '';
   let markdown = '';
+
+  // intermediate view
+  let intermediately_data_source = JSON.parse(
+    $components[DATA_JSON_INDEX].source
+  );
+  let intermediately_data = [];
+  let intermediately_data_index = 0;
+
+  for (let i = 0; i < intermediately_data_source.length; i++) {
+    intermediately_data[i] = intermediately_data_source[i].src;
+  }
+
+  function startIntermediatelyData() {
+    document.getElementById('myImg').src = intermediately_data[0];
+  }
+
+  function prevIntermediatelyData() {
+    document.getElementById('myImg').src =
+      intermediately_data[intermediately_data_index--];
+    //console.log(intermediately_data_index);
+    if (intermediately_data_index < 0) {
+      intermediately_data_index = intermediately_data.length - 1;
+    }
+  }
+
+  function nextIntermediatelyData() {
+    document.getElementById('myImg').src =
+      intermediately_data[intermediately_data_index++];
+    //console.log(intermediately_data_index);
+    if (intermediately_data_index >= intermediately_data.length) {
+      intermediately_data_index = 0;
+    }
+  }
+
+  let index_input = '';
+
+  function lookupIntermediatelyData() {
+    if (index_input > 0 && index_input <= intermediately_data.length) {
+      document.getElementById('myImg').src =
+        intermediately_data[index_input - 1];
+    } else {
+      index_input = 'Invalid Input!!!';
+    }
+  }
 </script>
 
 <style>
@@ -84,7 +133,7 @@
 
   button {
     /* width: 50%;
-		height: 100%; */
+    height: 100%; */
     background: white;
     text-align: left;
     position: relative;
@@ -124,6 +173,7 @@
     border: none;
     display: block;
   }
+
 </style>
 
 <div class="view-toggle">
@@ -142,7 +192,9 @@
       CSS output
     </button> -->
 
-    <button class:active={view === 'intermediate'} on:click={() => (view = 'intermediate')}>
+    <button
+      class:active={view === 'intermediate'}
+      on:click={() => ((view = 'intermediate'), startIntermediatelyData())}>
       Intermediate View
     </button>
   {/if}
@@ -151,7 +203,7 @@
 <!-- component viewer/intermediate output -->
 <div
   class="tab-content"
-  class:visible={selected_type !== 'md' && (view === 'result' || view === 'intermediate')}>
+  class:visible={selected_type !== 'md' && view === 'result'}>
   <Viewer
     bind:this={viewer}
     bind:error={runtimeError}
@@ -159,6 +211,19 @@
     {relaxed}
     {injectedJS}
     {injectedCSS} />
+</div>
+
+<div
+  style="text-align: center"
+  class="tab-content"
+  class:visible={selected_type !== 'md' && view === 'intermediate'}>
+  <img id="myImg" src="" height="85%" width="auto" />
+  <br />
+  <button on:click={prevIntermediatelyData}>Previous</button>
+  <button on:click={nextIntermediatelyData}>Next</button>
+  <br />
+  <button on:click={lookupIntermediatelyData}>Lookup Data No.</button>
+  <input bind:value={index_input} placeholder="enter the number" />
 </div>
 
 <!-- js output -->

@@ -156,20 +156,22 @@
         handle_select(newComponent || $components[0]);
       }
     }
+    console.log('access rebundle: OK!');
   }
 
   let view;
   $: view === 'intermediate' ? bundleIntermediate() : rebundle();
 
   async function bundleIntermediate() {
-    const token = (current_token = {});
+    /*const token = (current_token = {});
     const intermediateApp =
       INTERMEDIATE_APP_MAP[`${$selected.name}.${$selected.type}`] ||
       $components[0];
     const result = await bundler.bundle(
       $components.slice(1).concat([intermediateApp])
     );
-    if (result && token === current_token) bundle.set(result);
+    if (result && token === current_token) bundle.set(result);*/    
+    console.log('access bundleIntermediate: OK!');
   }
 
   // TODO this is a horrible kludge, written in a panic. fix it
@@ -370,6 +372,7 @@
       driver.set(0);
     }
   };
+
 </script>
 
 <style>
@@ -431,6 +434,7 @@
   .container button:hover {
     color: #333;
   }
+
 </style>
 
 <div class="container" class:orientation>
@@ -463,7 +467,7 @@
           {:else if $selected.name === DEFAULT_STYLES_NAME}
             <Styles on:change={handle_styles_change} />
           {:else if $selected.name == 'sidebar'}
-            <Sidebar/>
+            <Sidebar />
           {/if}
         </div>
 

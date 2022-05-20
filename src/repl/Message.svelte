@@ -7,7 +7,9 @@
   export let kind;
   export let details = null;
   export let filename = null;
-  export let truncate;
+  // I have tried to change the truncate to undefied to avoid the warning 
+  // export let truncate;
+  export let truncate = undefined;
 
   function message(details) {
     let str = details.message || '[missing message]';

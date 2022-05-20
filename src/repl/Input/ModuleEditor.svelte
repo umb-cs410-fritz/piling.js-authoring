@@ -11,7 +11,8 @@
   } = getContext('REPL');
 
   export let errorLoc;
-  export let handle_select;
+  // has warning with the handle_select, then I turn this to be comment to avoid the error.
+  // export let handle_select;
 
   let editor;
   onMount(() => {

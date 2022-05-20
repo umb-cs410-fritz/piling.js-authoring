@@ -78,6 +78,7 @@
     // Needs to trigger re-run
     close();
     refreshHandler();
+    setTimeout(function(){ location.reload(); }, 2500);
   }
 
   $: if (userAndGistId) {
