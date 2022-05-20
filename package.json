@@ -43,7 +43,6 @@
     "dev": "run-p autobuild start:dev",
     "start": "sirv public",
     "start:dev": "sirv public --dev",
-    "precommit": "NODE_ENV=production lint-staged",
     "lint": "eslint src/**/*.js src/**/*.svelte rollup.config.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d public -t --git git"
