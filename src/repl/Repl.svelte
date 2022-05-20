@@ -24,7 +24,13 @@
     selectedComponent as selected,
     autoRun,
     prevPilingState,
+    style_options,
   } from '../stores.js';
+
+  let style_options_json;
+  style_options.subscribe(c => {
+    style_options_json = c;
+  });
 
   import {
     DEFAULT_DATA_NAME,
@@ -261,9 +267,9 @@
     handle_styles_change: (event) => {
       console.log('this is event obj' + event);
       console.log(event);
-      var styles_var = `const styles = {
-            columns: ${event.target.value},
-            };
+      //console.log(update_styles);
+      //update_styles.slider_value = event.target.value;
+      var styles_var = `const styles = ${JSON.stringify(style_options_json)};
           export default styles;`;
       components.update((components) => {
         // TODO this is a bit hacky — we're relying on mutability
@@ -465,7 +471,7 @@
                 on:editorReady={fulfillDataEditorReady} />
             </div>
           {:else if $selected.name === DEFAULT_STYLES_NAME}
-            <Styles on:change={handle_styles_change} />
+            <Styles  />
           {:else if $selected.name == 'sidebar'}
             <Sidebar />
           {/if}
