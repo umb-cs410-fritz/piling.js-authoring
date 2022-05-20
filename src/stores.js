@@ -56,3 +56,14 @@ export const prevPilingState = makeSerializable(writable(_prevPilingState));
 export const alwaysPreservePiles = makeSerializable(
   writable(_alwaysPreservePiles)
 );
+export const style_options = makeSerializable(
+  writable({
+    // style_options
+    columns: 6,
+    cellPadding: 16,
+    pileCellAlignment: 'center',
+    pileBorderSize: 1,
+    pileVisibilityItems: false,
+    previewAlignment: 'center',
+  })
+);
